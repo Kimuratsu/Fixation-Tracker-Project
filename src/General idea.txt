@@ -1,0 +1,32 @@
+ This [was] the project's Main class before I tossed all of this into a separate file
+ To start off I'll be integrating git
+ Then I'll work on the main logic and tinker with it a bunch to [[try]] and optimise it
+ Then finally add some nice [programmer art] GUI that I'll try to account for early on
+ If you see this I've probably turned the project in before the GUI is fully implemented
+ ...And I only have myself to blame, but oh well
+ It will be done soon, here's to hoping it will be before the 30th
+
+ The main idea of this project is to work as a "fixation tracker" for myself
+ Basically a program that lets the user set a timer with a note saying something akin to
+ "Practice drawing in X style" or "Watch two seasons of X show"
+ Small silly things like that the timer is supposed to give some minor time pressure
+ meant to promote actually doing the things as opposed to putting them off indefinitely
+ [kinda like this project, whoops]
+ This way whatever I'm fixating on is actually touched and not allowed to slip my mind forever
+
+ As for the particulars:
+ - The program is meant to let the user set multiple timers
+ - The timers are picked from presets labelled with "Wood Types"
+   [ex. oak = 6 hours, maple = 1 day]
+ - The notes are picked from presets labelled with "Kindling Types"
+   [ex. pine resin kindling = 200 character plaintext note, pine cone = 5 bullet points note]
+ - Once a timer has started, the user may add an "additive" to the "fire" [active timer]
+   [ex. cinnamon stick = +1 checklist bullet point added to note, dry rosemary = +6 hours timer]
+ - The timer will be based on the stored time of starting and the system clock for simplicity
+ - Once the timer runs out, the user may choose one of two options
+    - Archiving the timer, saving the note, when it started and ended + all additive info
+    - Saving the timer as template, letting the user quickly restart it at any time
+ - The GUI is meant to dynamically show the timers as campfires of varying appearances
+   so some flags will need to be set up for handling states such as "how much of the timer
+   has passed" or "which additives were added and how many", as those would affect the fire
+   [timer's] appearance. Though the actual art is a bit of a "stretch goal" at the moment
