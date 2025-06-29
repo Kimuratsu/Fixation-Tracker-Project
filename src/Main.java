@@ -1,18 +1,5 @@
-import javax.xml.namespace.QName;
-
 // Stuff below is to be tossed into other classes later
-// Used to get the current time
-import java.io.File;
 import java.time.Instant;
-// Used for the current timezone on this machine
-import java.time.ZoneId;
-// Variable type that stores the date and time, confirm this later tho I just found this solution online
-import java.time.ZonedDateTime;
-// Standard java package formatter for date and time, full list of options will be left below
-// MOVE TO THE README LATER
-import java.time.format.DateTimeFormatter;
-// An input-output import that will let the program make text files
-import java.io.FileWriter;
 // Same as before but its just there to catch exceptions
 import java.io.IOException;
 
@@ -29,23 +16,20 @@ public class Main
         /// Stuff below is about the timer behaviour
         ///
 
-        Instant startTime = Instant.now();
-        //assigning end of the timer, currently hardcoded to 60 seconds
-        Instant endTime = startTime.plusSeconds(60);
+        /// Calling the TimerValueConverter Class
+        TimerValueConverter timerValueConverter = new TimerValueConverter();
+        TimerHandler timerHandler = new TimerHandler();
 
-        //start and end time in just a singular number [milliseconds since some preset date]
-        //leaving here in case i need it for data storage purposes
-        long startTimeInMillis = startTime.toEpochMilli();
-        long endTimeInMillis = endTime.toEpochMilli();
+        /// TEST INPUT TO BE REPLACED BY USER INPUT
+        String testWoodType = "Pine";
 
-        //once this will be moved into its own class replace 'zdt' with something more generic
-        //but what this does is basically convert startTime into a variable that respects the machine's
-        //timezone and stuff
-        ZonedDateTime zdt = startTime.atZone(ZoneId.systemDefault());
-        //and this takes that variable and puts it through DateTimeFormatter to make a nice output
-        String startDateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(zdt);
-        ZonedDateTime zdt2 = endTime.atZone(ZoneId.systemDefault());
-        String endDateTime = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(zdt2);
+        /// TEST TIMERS TO BE REPLACED BY PROPER TIMER HANDLING
+        Instant testStartTimer = timerHandler.NewTimerStart();
+        Instant testNewTimerEnd = timerHandler.NewTimer(testWoodType);
+
+        /// Converting our timer Start and End to a formatted String as per TVC Class
+        String startDateTime = timerValueConverter.ConvertToZoneDateTime(testStartTimer);
+        String endDateTime = timerValueConverter.ConvertToZoneDateTime(testNewTimerEnd);
 
         System.out.println("Starting time is " + startDateTime + " and ending time is " + endDateTime);
 
@@ -102,9 +86,9 @@ public class Main
         System.out.println();
         TherapyCheckup therapyCheckup = new TherapyCheckup();
 
-        MyBraincells braincells = new MyBraincells("Braincells", 2);
-        IQPoints iq = new IQPoints("IQ Points", 10, false);
-        Thoughts thoughts = new Thoughts(572, "Unrelated", "Thoughts");
+        MyBraincells braincells = new MyBraincells("Braincells", 4);
+        IQPoints iq = new IQPoints("IQ Points", 8, false);
+        Thoughts thoughts = new Thoughts(1236, "Unrelated", "Thoughts");
 
         therapyCheckup.addBraincell(braincells);
         therapyCheckup.addBraincell(iq);
@@ -117,13 +101,3 @@ public class Main
         System.out.println("This is a test because apparently I need to rethink my life lol");
     }
 }
-
-// All the stuff for DateTimeFormatter
-//    HH - 24-hour format hour
-//    hh - 12-hour format hour [might need to use 'a' after this to add the am/pm marker]
-//    mm - minutes
-//    ss - seconds
-//    dd - day of month
-//    MM - month
-//    yyyy - year
-//    a - AM/PM marker
