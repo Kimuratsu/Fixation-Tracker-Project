@@ -51,6 +51,19 @@ public class Main
 
             PersistenceService.saveState(fileCampfires);
 
+            ///
+            /// This is a test to see how the file structure will look like when printed directly
+            ///
+
+            System.out.println();
+            System.out.println("Saved JSON structure:");
+            System.out.println(new String(java.nio.file.Files.readAllBytes(java.nio.file.Paths.get("file_campfires.json"))));
+
+            ///
+            /// by the program
+            ///
+
+
             List<CampfireCombination> loadedFileCampfires = PersistenceService.loadState();
             System.out.println("Stored Campfires: " + loadedFileCampfires.size());
         }
