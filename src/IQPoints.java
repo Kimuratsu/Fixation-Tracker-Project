@@ -7,4 +7,10 @@ public class IQPoints extends MyBraincells
         super(name, quantity);
         this.isReal = isReal;
     }
+
+    @Override
+    public String toString()
+    {
+        return getQuantity() + " " + getName() + ". Is IQ Real? " + isReal;
+    }
 }

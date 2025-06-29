@@ -12,4 +12,10 @@ public class Thoughts extends MyBraincells
     {
         return type;
     }
+
+    @Override
+    public String toString()
+    {
+        return getQuantity() + " " + getType() + " " + getName();
+    }
 }
