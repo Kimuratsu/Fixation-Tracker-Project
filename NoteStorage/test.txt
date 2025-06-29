@@ -1,0 +1,1 @@
+test of what gets written into the NoteStorage directory

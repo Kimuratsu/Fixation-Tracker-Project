@@ -16,6 +16,10 @@ import java.io.FileWriter;
 // Same as before but its just there to catch exceptions
 import java.io.IOException;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Main
 {
     public static void main(String[] args)
@@ -48,18 +52,43 @@ public class Main
         /// Stuff below this is about creating a text document in the files with some sample text
         ///
 
+        String content = "test of what gets written into the NoteStorage directory";
+        String subdirectory = "NoteStorage";
+        String filename = "test.txt";
+
+
+
         //this will attempt to make a new text file with the name "test.txt"
         //its going to overwrite whatever file was there previously though so would be good to
         //make the final code always create either a unique seed or just make a new file by incrementing
         //some number, and then having it read what the highest number is before it does the action
         //its probably going to be pretty slow but i can afford that for now
         //if its too cumbersome ill fix it later, i dont [[think]] its unfixable
-        try (FileWriter writer = new FileWriter("test.txt"))
+        ///(FileWriter writer = new FileWriter(filename))
+        /// //this is what will be inside the text file
+        /// writer.write(content);
+        /// //and this is just the confirmation in runtime that it was successful
+        /// System.out.println("File written");
+
+        //the stuff above relates to the commented out code, im leaving this here for this one
+        //commit since im studying the code below [found it online and want to actually know
+        //exactly what it does]
+        //and wish to leave a visible trace of how i got here and my previous solution
+        //the next commit will likely see both comments removed and replaced with an explanation
+        //of the code below
+
+        try
         {
-            //this is what will be inside the text file
-            writer.write("test2");
-            //and this is just the confirmation in runtime that it was successful
-            System.out.println("File written");
+            Path dirPath = Paths.get(subdirectory);
+            if(!Files.exists(dirPath))
+            {
+                Files.createDirectory(dirPath);
+            }
+
+            Path filePath = dirPath.resolve(filename);
+
+            Files.write(filePath, content.getBytes());
+            System.out.println("File written to " + filePath);
         }
         //this is a necessary exception thrower, basically catching if anything unexpected happened
         //while making the file
