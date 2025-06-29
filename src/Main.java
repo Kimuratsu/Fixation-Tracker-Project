@@ -1,4 +1,5 @@
 import java.time.Instant;
+import java.util.List;
 
 public class Main
 {
@@ -38,29 +39,24 @@ public class Main
         /// It can and will be fixed, but I couldn't dwell on that detail at the moment
         textFileHandler.NewNote("Test of what gets written into the subdirectory", "NoteStorage");
 
-        /// Stuff below this is just templates for making sure I remember how OOP stuff is even coded
-        /// in Java
-        // Basically all the stuff below is just a temporary template for myself to understand
-        // Polymorphism, Inheritance, Encapsulation and probably Abstraction within Java
-        // It's gonna get removed by the final git commit when I send my project over
-        // But if you're checking the older commits, hi! Hope my lame humour gave you a laugh.
+        ///
+        /// Stuff below is the combination of Timers and Notes, but mostly the handling of the JSON file
+        ///
 
-        // okay no abstraction because im lazy and it would take more writing than its worth for a template
-        System.out.println();
-        TherapyCheckup therapyCheckup = new TherapyCheckup();
+        try
+        {
+            List<CampfireCombination> fileCampfires = PersistenceService.loadState();
 
-        MyBraincells braincells = new MyBraincells("Braincells", 5);
-        IQPoints iq = new IQPoints("IQ Points", 12, false);
-        Thoughts thoughts = new Thoughts(2738, "Unrelated", "Thoughts");
+            fileCampfires.add(new CampfireCombination("test.txt", "Pinecone", 1, timerValueConverter.ConvertToMillis(testNewTimerEnd)));
 
-        therapyCheckup.addBraincell(braincells);
-        therapyCheckup.addBraincell(iq);
-        therapyCheckup.addBraincell(thoughts);
+            PersistenceService.saveState(fileCampfires);
 
-        therapyCheckup.displayTherapyCheckup();
-
-        System.out.println();
-
-        System.out.println("This is a test because apparently I need to rethink my life lol");
+            List<CampfireCombination> loadedFileCampfires = PersistenceService.loadState();
+            System.out.println("Stored Campfires: " + loadedFileCampfires.size());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
