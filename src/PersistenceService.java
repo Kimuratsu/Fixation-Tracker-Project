@@ -64,6 +64,11 @@ public class PersistenceService
         return loadState().stream().filter(campfire -> campfire.getTimerValue() > currentTime).collect(Collectors.toList());
     }
 
+    public static int getTotalTimerCount() throws Exception
+    {
+        return loadState().size();
+    }
+
     public static void printActiveTimers() throws Exception
     {
         List<CampfireCombination> activeTimers = getActiveTimers();

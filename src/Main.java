@@ -9,29 +9,10 @@ public class Main
     public static void main(String[] args) throws Exception
     {
 
-        /// Calling the TimerValueConverter Class
+        /// Calling the TimerValueConverter Class and the TextFileHandler Class
         TimerValueConverter timerValueConverter = new TimerValueConverter();
         TimerHandler timerHandler = new TimerHandler();
-
-        ///
-        /// Stuff below this is about creating a text document in the files with some sample text
-        ///
-
         TextFileHandler textFileHandler = new TextFileHandler();
-
-        /// This creates a new note in the /NoteStorage subdirectory
-        /// This test currently overwrites the previous note which NEEDS TO BE FIXED VIA ID SYSTEM
-        /// The ID system could either be a specific unique Seed, or simple file incrementation
-        /// The solution present in the final project I send is likely unoptimised, but such is life
-        /// It can and will be fixed, but I couldn't dwell on that detail at the moment
-
-
-        ///
-        /// Stuff below is the combination of Timers and Notes, but mostly the handling of the JSON file
-        ///
-
-
-
 
         ///
         /// Below is the final "production code" that I'll be using for allowing for user input and
@@ -40,6 +21,7 @@ public class Main
         /// my best bet. Also I tried to at least format it nicely
         ///
 
+        /// All the various variables I randomly added in to make the front-end user interfacing work
         String state = "View or Add";
         Scanner scanner = new Scanner(System.in);
         String userInput;
@@ -49,11 +31,13 @@ public class Main
         String noteContents;
         Instant newTimer;
 
+        System.out.println();
         System.out.println("Hello, this code is meant to allow for quick and easy creation of 'campfires'");
         System.out.println("A 'campfire' is a combination of a timer and an associated note, used for " +
                 "quickly making a tracker of random thoughts and ideas for focusing on them while the timer lasts");
         System.out.println("'Campfires' are made through adding some 'fuel' alongside 'kindling' and lighting them");
         System.out.println("The 'fuel' is our timer and the 'kindling' is our type [length] of a note");
+        System.out.println();
 
         do
         {
@@ -156,13 +140,14 @@ public class Main
 
                         textFileHandler.NewNote(noteContents, "NoteStorage");
                         newTimer = timerHandler.NewTimer(timerFuel);
+                        int id = PersistenceService.getTotalTimerCount()+1;
+                        String fileName = "test" + id + ".txt";
 
                         try
                         {
                             List<CampfireCombination> fileCampfires = PersistenceService.loadState();
 
-                            /// ///NAME AND ID CHANGE!!
-                            fileCampfires.add(new CampfireCombination("test.txt", kindlingType, 1, timerValueConverter.ConvertToMillis(newTimer), timerFuel));
+                            fileCampfires.add(new CampfireCombination(fileName, kindlingType, id, timerValueConverter.ConvertToMillis(newTimer), timerFuel));
 
                             PersistenceService.saveState(fileCampfires);
 

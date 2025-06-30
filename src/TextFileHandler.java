@@ -5,12 +5,10 @@ import java.nio.file.Paths;
 
 public class TextFileHandler
 {
-    public void NewNote(String content, String subdirectory)
-    {
-        /// IMPORTANT!!! The name of the file is hardcoded right now and WILL overwrite the previous
-        /// Test file. Fix this by either making the user input the name [undesirable change]
-        /// or by adding that ID system via further inheritance (?) and linking the timers with notes
-        String filename = "test.txt";
+    public void NewNote(String content, String subdirectory) throws Exception {
+
+        int id = PersistenceService.getTotalTimerCount() + 1;
+        String filename = "test" + id + ".txt";
 
         try
         {
