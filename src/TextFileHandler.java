@@ -7,11 +7,6 @@ public class TextFileHandler
 {
     public void NewNote(String content, String subdirectory)
     {
-        //specifically file contents
-        //String content = "test of what gets written into the NoteStorage directory";
-        //the subdirectory, this one will likely not change for this project
-        //String subdirectory = "NoteStorage";
-
         /// IMPORTANT!!! The name of the file is hardcoded right now and WILL overwrite the previous
         /// Test file. Fix this by either making the user input the name [undesirable change]
         /// or by adding that ID system via further inheritance (?) and linking the timers with notes
@@ -40,4 +35,20 @@ public class TextFileHandler
             System.err.println("Error writing to file: " +  e.getMessage());
         }
     }
+
+    public boolean isAppropriateLength(String content, String noteType)
+    {
+        int allowedLength;
+
+        switch(noteType)
+        {
+            case "Sage" ->  allowedLength = 50;
+            case "Pinecone" -> allowedLength = 200;
+            case "Resinwood" -> allowedLength = 500;
+            default -> allowedLength = 0;
+        }
+
+        return content.length() <= allowedLength;
+    }
+
 }

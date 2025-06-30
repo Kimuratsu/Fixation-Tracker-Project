@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PersistenceService
 {
@@ -40,6 +41,51 @@ public class PersistenceService
             /// By falling back to an empty array
             return new ArrayList<>();
         }
+    }
+
+    /// This fetches the timer of a specific file
+    public static long getTimerForFile(String fileName) throws Exception
+    {
+        List<CampfireCombination> campfires = loadState();
+        return campfires.stream().filter(c -> c.getFileName().equals(fileName)).findFirst()
+                .map(CampfireCombination::getTimerValue).orElse(0L);
+    }
+
+    /// This fetches the list of all file names
+    public static List<String> getAllFileNames() throws Exception {
+        List<CampfireCombination> campfires = loadState();
+        return campfires.stream().map(CampfireCombination::getFileName).collect(Collectors.toList());
+    }
+
+    /// Fetches *only* timers that are still active
+    public static List<CampfireCombination> getActiveTimers() throws Exception
+    {
+        long currentTime = System.currentTimeMillis();
+        return loadState().stream().filter(campfire -> campfire.getTimerValue() > currentTime).collect(Collectors.toList());
+    }
+
+    public static void printActiveTimers() throws Exception
+    {
+        List<CampfireCombination> activeTimers = getActiveTimers();
+
+        if(activeTimers.isEmpty())
+        {
+            System.out.println("There are no lit campfires!");
+            return;
+        }
+
+        System.out.println("There are " + activeTimers.size() + " lit campfires!");
+        System.out.println("The campfires are:");
+
+        for(CampfireCombination campfire : activeTimers)
+        {
+            System.out.println(campfire.getFileName() + " a " + campfire.getTimerType() + " fire with "
+                    + campfire.getFileType() + " kindling. It expires in: "
+                    + campfire.getRemainingTimeFormatted());
+        }
+
+        System.out.println("Remember you can access your campfire notes within the program's directory!");
+        System.out.println("You can also view the expired notes there.");
     }
 }
 

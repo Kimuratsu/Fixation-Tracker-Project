@@ -1,13 +1,17 @@
 {
   "fileCampfires" : [ {
     "fileName" : "test.txt",
-    "fileType" : "Pinecone",
+    "fileType" : "Sage",
     "campfireID" : 1,
-    "timerValue" : 1751240614396
+    "timerValue" : 1751296779746,
+    "timerType" : "Birch",
+    "remainingTimeFormatted" : "Expired"
   }, {
     "fileName" : "test.txt",
-    "fileType" : "Pinecone",
+    "fileType" : "Resinwood",
     "campfireID" : 1,
-    "timerValue" : 1751240654638
+    "timerValue" : 1751298281638,
+    "timerType" : "Pine",
+    "remainingTimeFormatted" : "4 minutes59 seconds"
   } ]
 }
