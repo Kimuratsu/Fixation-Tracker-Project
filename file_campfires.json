@@ -40,6 +40,20 @@
     "campfireID" : 6,
     "timerValue" : 1751385026122,
     "timerType" : "Pine",
-    "remainingTimeFormatted" : "4 minutes59 seconds"
+    "remainingTimeFormatted" : "Expired"
+  }, {
+    "fileName" : "Campfire7.txt",
+    "fileType" : "Pinecone",
+    "campfireID" : 7,
+    "timerValue" : 1751391537727,
+    "timerType" : "Oak",
+    "remainingTimeFormatted" : "51 minutes46 seconds"
+  }, {
+    "fileName" : "Campfire8.txt",
+    "fileType" : "Sage",
+    "campfireID" : 8,
+    "timerValue" : 1751392031515,
+    "timerType" : "Oak",
+    "remainingTimeFormatted" : "59 minutes59 seconds"
   } ]
 }

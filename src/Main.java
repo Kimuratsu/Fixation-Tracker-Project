@@ -28,7 +28,7 @@ public class Main
         boolean isValidLength;
         String timerFuel = "alwaysbreakatstart";
         WoodType wood = null;
-        String kindlingType;
+        KindlingType kindling = null;
         String noteContents;
         Instant newTimer;
 
@@ -75,7 +75,8 @@ public class Main
             while(state.equals("LightningNew"))
             {
                 timerFuel = ("alwaysbreakatstart");
-                kindlingType = ("alwaysbreakatstart");
+                wood = null;
+                kindling = null;
 
                 while(wood == null)
                 {
@@ -99,87 +100,84 @@ public class Main
                 }
                 newTimer = timerHandler.NewTimer(wood);
 
-                if(timerFuel.equals("Pine") || timerFuel.equals("Birch") || timerFuel.equals("Oak"))
+                while(kindling == null)
                 {
                     System.out.println("Please select a type of kindling: ");
                     System.out.println("- '1' or 'Sage' for a 50 character note ");
                     System.out.println("- '2' or 'Pinecone' for a 200 character note ");
                     System.out.println("- '3' or 'Resinwood' for a 500 character note");
                     System.out.print("Please enter a valid option: ");
-                    kindlingType = scanner.nextLine().trim().toLowerCase();
+                    String input = scanner.nextLine().trim().toLowerCase();
 
-                    switch (kindlingType)
-                    {
-                        case "1":
-                        case "sage": kindlingType = "Sage"; break;
-                        case "2":
-                        case "pinecone": kindlingType = "Pinecone"; break;
-                        case "3":
-                        case "resinwood": kindlingType = "Resinwood"; break;
-                        default: System.out.println("It would appear that the input is invalid, please " +
-                                "try again"); break;
-                    }
-
-                    if(kindlingType.equals("Sage") || kindlingType.equals("Pinecone")
-                            || kindlingType.equals("Resinwood"))
-                    {
-                        noteContents = ("alwaysbreakatstart");
-
-                        do
-                        {
-                            System.out.println("Thank you, your " + timerFuel + " campfire is being " +
-                                    "lit using " + kindlingType + " as fuel");
-                            System.out.println("Please add the desired note now:");
-
-                            noteContents = scanner.nextLine();
-
-                            isValidLength = textFileHandler.isAppropriateLength(noteContents, kindlingType);
-
-                            if(!isValidLength) System.out.println("Note is too long! The query will now repeat," +
-                                    " feel free to copy previous note to trim it appropriately.");
+                    kindling = switch (input) {
+                        case "1", "sage" -> new Sage();
+                        case "2", "pinecone" -> new Pinecone();
+                        case "3", "resinwood" -> new Resinwood();
+                        default -> {
+                            System.out.println("It would appear that the input is invalid, please "
+                                    + "try again");
+                            yield null;
                         }
-                        while (!isValidLength);
-
-                        textFileHandler.NewNote(noteContents, "NoteStorage");
-                        newTimer = timerHandler.NewTimer(wood);
-                        int id = PersistenceService.getTotalTimerCount()+1;
-                        String fileName = "Campfire" + id + ".txt";
-
-                        try
-                        {
-                            List<CampfireCombination> fileCampfires = PersistenceService.loadState();
-
-                            fileCampfires.add(new CampfireCombination(fileName, kindlingType, id, timerValueConverter.ConvertToMillis(newTimer), timerFuel));
-
-                            PersistenceService.saveState(fileCampfires);
-
-                            ///
-                            /// This is a test to see how the file structure will look like when printed directly
-                            ///
-
-                            System.out.println();
-                            System.out.println("Saved JSON structure:");
-                            System.out.println(new String(Files.readAllBytes(Paths.get("file_campfires.json"))));
-
-                            ///
-                            /// by the program
-                            ///
-
-                            /// This for the most part just shows how many timers [on-going and otherwise] are saved
-                            /// In the JSON file
-                            List<CampfireCombination> loadedFileCampfires = PersistenceService.loadState();
-                            System.out.println();
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
+                    };
                 }
 
-                state = "View or Add";
-            }
+                if(kindling != null)
+                {
+                    noteContents = ("alwaysbreakatstart");
 
+                    do
+                    {
+                        System.out.println("Thank you, your " + timerFuel + " campfire is being " +
+                                "lit using " + kindling + " as fuel");
+                        System.out.println("Please add the desired note now:");
+
+                        noteContents = scanner.nextLine();
+
+                        isValidLength = textFileHandler.isAppropriateLength(noteContents, kindling);
+
+                        if(!isValidLength) System.out.println("Note is too long! The query will now repeat," +
+                                " feel free to copy previous note to trim it appropriately.");
+                    }
+                    while (!isValidLength);
+
+                    textFileHandler.NewNote(noteContents, "NoteStorage");
+                    newTimer = timerHandler.NewTimer(wood);
+                    int id = PersistenceService.getTotalTimerCount()+1;
+                    String fileName = "Campfire" + id + ".txt";
+
+                    try
+                    {
+                        List<CampfireCombination> fileCampfires = PersistenceService.loadState();
+
+                        fileCampfires.add(new CampfireCombination(fileName, kindling.getName(), id, timerValueConverter.ConvertToMillis(newTimer), timerFuel));
+
+                        PersistenceService.saveState(fileCampfires);
+
+                        ///
+                        /// This is a test to see how the file structure will look like when printed directly
+                        ///
+
+                        System.out.println();
+                        System.out.println("Saved JSON structure:");
+                        System.out.println(new String(Files.readAllBytes(Paths.get("file_campfires.json"))));
+
+                        ///
+                        /// by the program
+                        ///
+
+                        /// This for the most part just shows how many timers [on-going and otherwise] are saved
+                        /// In the JSON file
+                        List<CampfireCombination> loadedFileCampfires = PersistenceService.loadState();
+                        System.out.println();
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                state = ("View or Add");
+                break;
+            }
             /// This exits the do while loop, there's probably a more elegant way to do this, but I'll
             /// fix it once the more important functionality is finished
             while (state.equals("Exiting"))

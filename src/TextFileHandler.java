@@ -34,19 +34,9 @@ public class TextFileHandler
         }
     }
 
-    public boolean isAppropriateLength(String content, String noteType)
+    public boolean isAppropriateLength(String content, KindlingType kindlingType)
     {
-        int allowedLength;
-
-        switch(noteType)
-        {
-            case "Sage" ->  allowedLength = 50;
-            case "Pinecone" -> allowedLength = 200;
-            case "Resinwood" -> allowedLength = 500;
-            default -> allowedLength = 0;
-        }
-
-        return content.length() <= allowedLength;
+        return content.length() <= kindlingType.getMaxLength();
     }
 
 }
