@@ -19,6 +19,13 @@
     "campfireID" : 3,
     "timerValue" : 1751299769883,
     "timerType" : "Pine",
-    "remainingTimeFormatted" : "4 minutes59 seconds"
+    "remainingTimeFormatted" : "Expired"
+  }, {
+    "fileName" : "test4.txt",
+    "fileType" : "Sage",
+    "campfireID" : 4,
+    "timerValue" : 1751314105922,
+    "timerType" : "Oak",
+    "remainingTimeFormatted" : "59 minutes59 seconds"
   } ]
 }

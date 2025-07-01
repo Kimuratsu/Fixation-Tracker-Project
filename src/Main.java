@@ -141,7 +141,7 @@ public class Main
                         textFileHandler.NewNote(noteContents, "NoteStorage");
                         newTimer = timerHandler.NewTimer(timerFuel);
                         int id = PersistenceService.getTotalTimerCount()+1;
-                        String fileName = "test" + id + ".txt";
+                        String fileName = "Campfire" + id + ".txt";
 
                         try
                         {
