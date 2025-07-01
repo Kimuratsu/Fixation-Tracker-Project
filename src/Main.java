@@ -26,7 +26,8 @@ public class Main
         Scanner scanner = new Scanner(System.in);
         String userInput;
         boolean isValidLength;
-        String timerFuel;
+        String timerFuel = "alwaysbreakatstart";
+        WoodType wood = null;
         String kindlingType;
         String noteContents;
         Instant newTimer;
@@ -76,26 +77,27 @@ public class Main
                 timerFuel = ("alwaysbreakatstart");
                 kindlingType = ("alwaysbreakatstart");
 
-                System.out.println("To light a campfire, you will need to choose a type of fuel [timer " +
-                        "length], a type of kindling [length of note] and then write the contents");
-                System.out.println("Please select a type of fuel: ");
-                System.out.println("- '1' or 'Pine' for a 5 minute timer ");
-                System.out.println("- '2' or 'Birch' for a 10 minute timer ");
-                System.out.println("- '3' or 'Oak' for a 60 minute timer");
-                System.out.print("Please enter a valid option: ");
-                timerFuel = scanner.nextLine().trim().toLowerCase();
-
-                switch (timerFuel)
+                while(wood == null)
                 {
-                    case "1":
-                    case "pine": timerFuel = "Pine"; break;
-                    case "2":
-                    case "birch": timerFuel = "Birch"; break;
-                    case "3":
-                    case "oak": timerFuel = "Oak"; break;
-                    default: System.out.println("It would appear that the input is invalid, please " +
-                            "try again"); break;
+                    System.out.println("To light a campfire, you will need to choose a type of fuel [timer " +
+                            "length], a type of kindling [length of note] and then write the contents");
+                    System.out.println("Please select a type of fuel: ");
+                    System.out.println("- '1' or 'Pine' for a 5 minute timer ");
+                    System.out.println("- '2' or 'Birch' for a 10 minute timer ");
+                    System.out.println("- '3' or 'Oak' for a 60 minute timer");
+                    System.out.print("Please enter a valid option: ");
+                    timerFuel = scanner.nextLine().trim().toLowerCase();
+
+                    wood = switch (timerFuel)
+                    {
+                        case "1", "pine" -> { timerFuel = "Pine"; yield new Pine(); }
+                        case "2", "birch" -> { timerFuel = "Birch"; yield new Birch(); }
+                        case "3", "oak" -> { timerFuel = "Oak"; yield new Oak(); }
+                        default -> { System.out.println("It would appear that the input is invalid, please "
+                                + "try again"); yield null; }
+                    };
                 }
+                newTimer = timerHandler.NewTimer(wood);
 
                 if(timerFuel.equals("Pine") || timerFuel.equals("Birch") || timerFuel.equals("Oak"))
                 {
@@ -139,7 +141,7 @@ public class Main
                         while (!isValidLength);
 
                         textFileHandler.NewNote(noteContents, "NoteStorage");
-                        newTimer = timerHandler.NewTimer(timerFuel);
+                        newTimer = timerHandler.NewTimer(wood);
                         int id = PersistenceService.getTotalTimerCount()+1;
                         String fileName = "Campfire" + id + ".txt";
 
